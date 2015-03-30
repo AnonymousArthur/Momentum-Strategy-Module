@@ -20,6 +20,71 @@ public class TradeRec {
 	public TradeRec() {
 		
 	}
+
+	public void setRIC(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDate(Date date2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setTime(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setType(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setQualifier(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setOpen(double parseDouble) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setHigh(double parseDouble) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLow(double parseDouble) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLast(double parseDouble) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setVolume(long parseLong) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setOpenInterest(double parseDouble) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSettle(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDataSource(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	
