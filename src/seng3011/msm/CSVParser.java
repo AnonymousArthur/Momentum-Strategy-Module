@@ -37,10 +37,9 @@ public class CSVParser {
 					}
 					//System.out.println(date);
 					//break;					
-					System.out.println(date);
+					//System.out.println(date);
 					newTradeRec.setRIC(trade[0]);
-					newTradeRec.setDate(date);
-					
+					newTradeRec.setDate(date);					
 					newTradeRec.setTime(trade[2]);
 					newTradeRec.setType(trade[3]);
 					newTradeRec.setQualifier(trade[4]);
