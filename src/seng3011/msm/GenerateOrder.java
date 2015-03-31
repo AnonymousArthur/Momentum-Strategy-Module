@@ -52,9 +52,28 @@ public class  GenerateOrder {
 					
 				}
 			}
+			printOrder(order);
 			sellOrders.add(order);
 		}
 		return sellOrders;
 	}
 	static private double threshold = 0.001;
+	
+	public void printOrder(SellOrder order){
+		switch (order.signal) {
+		case 'b':
+			System.out.println("BUY "+order.date+" "+order.price);
+			break;
+
+		case 's':
+			System.out.println("SELL "+order.date+" "+order.price);
+			break;
+			
+		default:
+			
+			break;
+			
+		}
+		
+	}
 }
