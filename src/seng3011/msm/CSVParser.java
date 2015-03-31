@@ -35,9 +35,6 @@ public class CSVParser {
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-					//System.out.println(date);
-					//break;					
-					//System.out.println(date);
 					newTradeRec.setRIC(trade[0]);
 					newTradeRec.setDate(date);					
 					newTradeRec.setTime(trade[2]);
@@ -75,6 +72,5 @@ public class CSVParser {
 		}
 		return tradeRecs;		
 	}
-	
 	
 }
