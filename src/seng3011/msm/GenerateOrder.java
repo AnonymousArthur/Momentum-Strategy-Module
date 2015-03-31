@@ -1,4 +1,5 @@
 package seng3011.msm;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -7,6 +8,7 @@ import seng3011.msm.TradeRec;
 
 
 public class  GenerateOrder {
+	public static char check = 'a';
 	public GenerateOrder(){
 		
 	}
@@ -18,6 +20,7 @@ public class  GenerateOrder {
 		System.out.println(tradeRecs.size());
 		for(int i=1; i < tradeRecs.size(); i++){
 			SellOrder order = new SellOrder();
+			order.setRic(tradeRecs.get(i).getRic());
 			order.setDate(tradeRecs.get(i).date);
 			order.setTime(tradeRecs.get(i).time);
 			
@@ -45,35 +48,44 @@ public class  GenerateOrder {
 					Rts.remove(0);
 					double TSt = (SMAtCurr - SMAtPrev);
 					if(TSt>threshold){
-						order.setSignal('b');
+						order.setSignal('B');
+						if(order.getSignal() != check){
+							printOrder(order);
+						}
+						check = order.getSignal();
 					} else if (TSt<-threshold){
-						order.setSignal('s');
+						order.setSignal('S');
+						if(order.getSignal() != check){
+							printOrder(order);
+						}
+						check = order.getSignal();
 					}
 					
 				}
 			}
-			printOrder(order);
+			
 			sellOrders.add(order);
 		}
 		return sellOrders;
 	}
 	static private double threshold = 0.001;
 	
+	public void printCSV(){
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("SUMMARY.csv", true)))) {
+		    out.println("#RIC,Date/Time,Price,Volume,Value,Bid/Ask");
+		}catch (IOException e) {
+		}
+	}
 	public void printOrder(SellOrder order){
-		switch (order.signal) {
-		case 'b':
-			System.out.println("BUY "+order.date+" "+order.price);
-			break;
 
-		case 's':
-			System.out.println("SELL "+order.date+" "+order.price);
-			break;
-			
-		default:
-			
-			break;
-			
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("SUMMARY.csv", true)))) {
+		    out.println(order.ric+","+order.date+order.time+","+order.price+","+order.volume+","+Math.round(order.value*100.0)/100.0+","+order.signal);
+		}catch (IOException e) {
 		}
 		
+		//System.out.println(order.ric+","+order.date+order.time+","+order.price+","+order.volume+","+Math.round(order.value*100.0)/100.0+","+order.signal);
+
+				
 	}
+
 }

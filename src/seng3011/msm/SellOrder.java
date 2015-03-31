@@ -32,4 +32,7 @@ public class SellOrder {
 	public void setSignal(char signal){
 		this.signal = signal;
 	}
+	public char getSignal(){
+		return signal;
+	}
 }
