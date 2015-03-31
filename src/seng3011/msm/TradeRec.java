@@ -21,136 +21,107 @@ public class TradeRec {
 		
 	}
 
-	public void setRIC(String string) {
-		// TODO Auto-generated method stub
+	public void setRIC(String string) {		
 		ric = string;
 	}
 
-	public void setDate(Date date2) {
-		// TODO Auto-generated method stub
+	public void setDate(Date date2) {		
 		date = date2;
 	}
 
-	public void setTime(String string) {
-		// TODO Auto-generated method stub
+	public void setTime(String string) {		
 		time = string;
 	}
 
-	public void setType(String string) {
-		// TODO Auto-generated method stub
+	public void setType(String string) {		
 		type = string;
 	}
 
-	public void setQualifier(String string) {
-		// TODO Auto-generated method stub
+	public void setQualifier(String string) {		
 		qualifier = string;
 	}
 
-	public void setOpen(double parseDouble) {
-		// TODO Auto-generated method stub
+	public void setOpen(double parseDouble) {		
 		open = parseDouble;
 	}
 
-	public void setHigh(double parseDouble) {
-		// TODO Auto-generated method stub
+	public void setHigh(double parseDouble) {		
 		high = parseDouble;
 	}
 
-	public void setLow(double parseDouble) {
-		// TODO Auto-generated method stub
+	public void setLow(double parseDouble) {		
 		low = parseDouble;
 	}
 
-	public void setLast(double parseDouble) {
-		// TODO Auto-generated method stub
+	public void setLast(double parseDouble) {		
 		last = parseDouble;
 	}
 
-	public void setVolume(long parseLong) {
-		// TODO Auto-generated method stub
+	public void setVolume(long parseLong) {		
 		volume = parseLong;
 	}
 
-	public void setOpenInterest(double parseDouble) {
-		// TODO Auto-generated method stub
+	public void setOpenInterest(double parseDouble) {		
 		openInterest = parseDouble;
 	}
 
-	public void setSettle(String string) {
-		// TODO Auto-generated method stub
+	public void setSettle(String string) {		
 		settle = string;
 	}
 
-	public void setDataSource(String string) {
-		// TODO Auto-generated method stub
+	public void setDataSource(String string) {		
 		dataSource = string;
 	}
-	public String getRic() {
-		// TODO Auto-generated method stub
+	public String getRic() {		
 		return ric;
 	}
 	
-	public Date getDate() {
-		// TODO Auto-generated method stub
+	public Date getDate() {		
 		return date;
 	}
 
-	public String getTime() {
-		// TODO Auto-generated method stub
+	public String getTime() {		
 		return time;
 	}
 
-	public String getType() {
-		// TODO Auto-generated method stub
+	public String getType() {		
 		return type;
 	}
 
-	public String getQualifier() {
-		// TODO Auto-generated method stub
+	public String getQualifier() {		
 		return qualifier;
 	}
 
-	public double getOpen() {
-		// TODO Auto-generated method stub
+	public double getOpen() {		
 		return open;
 	}
 
-	public double getHigh() {
-		// TODO Auto-generated method stub
+	public double getHigh() {		
 		return high;
 	}
 
-	public double getLow() {
-		// TODO Auto-generated method stub
+	public double getLow() {		
 		return low;
 	}
 
-	public double getLast() {
-		// TODO Auto-generated method stub
+	public double getLast() {		
 		return last;
 	}
 
-	public long getVolume() {
-		// TODO Auto-generated method stub
+	public long getVolume() {		
 		return volume;
 	}
 
-	public double getOpenInterest() {
-		// TODO Auto-generated method stub
+	public double getOpenInterest() {		
 		return openInterest;
 	}
 
-	public String getSettle() {
-		// TODO Auto-generated method stub
+	public String getSettle() {		
 		return settle;
 	}
 
-	public String getDataSource() {
-		// TODO Auto-generated method stub
+	public String getDataSource() {		
 		return dataSource;
 	}
-	
-	
-	
-	
+
 }

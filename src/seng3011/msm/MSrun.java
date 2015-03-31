@@ -8,7 +8,7 @@ public class MSrun {
 		String csvPath = args[0];
 		ArrayList<TradeRec> tradeRecs = CSVParser.CSVParse(csvPath);
 		for (TradeRec tradeRec : tradeRecs) {
-			System.out.println(tradeRec.high);
+			//Process trade per day.
 		}
 	}
 	
