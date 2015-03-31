@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class TradeRec {
 	String ric;
-	Date date;
-	String time;
+	public Date date;
+	public String time;
 	String type;
 	String qualifier;
 	double open;
 	double high;
 	double low;
-	double last;
+	public double last;
 	long volume;
 	double openInterest;
 	String settle;
