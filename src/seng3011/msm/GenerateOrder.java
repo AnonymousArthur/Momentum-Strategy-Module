@@ -10,7 +10,6 @@ import seng3011.msm.TradeRec;
 public class  GenerateOrder {
 	public static char check = 'a';
 	public GenerateOrder(){
-		
 	}
 	public ArrayList<SellOrder> generate(ArrayList<TradeRec> tradeRecs) {
 		LinkedList<Double> Rts = new LinkedList<Double>();
@@ -70,12 +69,6 @@ public class  GenerateOrder {
 	}
 	static private double threshold = 0.001;
 	
-	public void printCSV(){
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("SUMMARY.csv", true)))) {
-		    out.println("#RIC,Date/Time,Price,Volume,Value,Bid/Ask");
-		}catch (IOException e) {
-		}
-	}
 	public void printOrder(SellOrder order){
 
 		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("SUMMARY.csv", true)))) {
