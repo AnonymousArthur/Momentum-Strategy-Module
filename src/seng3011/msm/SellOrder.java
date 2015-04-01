@@ -2,6 +2,7 @@ package seng3011.msm;
 
 import java.util.Date;
 
+//UNSW CSE SENG3011 Team Awesome Copyright Reserved
 public class SellOrder {
 	String ric;
 	Date date;

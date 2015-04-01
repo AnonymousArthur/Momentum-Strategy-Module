@@ -9,7 +9,7 @@ import java.util.Date;
 import seng3011.msm.SellOrder;
 import seng3011.msm.TradeRec;
 
-
+//UNSW CSE SENG3011 Team Awesome Copyright Reserved
 public class  GenerateOrder {
 	public static char check = 'a';
 	public static Date sDate, eDate;
@@ -20,7 +20,7 @@ public class  GenerateOrder {
 		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
 		int n = 3;
 		double profit=0;
-		System.out.println(tradeRecs.size());
+		//System.out.println(tradeRecs.size());
 		for(int i=1; i < tradeRecs.size(); i++){
 			SellOrder order = new SellOrder();
 			order.setRic(tradeRecs.get(i).getRic());
