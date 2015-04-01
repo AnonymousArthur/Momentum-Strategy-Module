@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class MSrun {
 	//Uasge: java -jar MSM.jar FILE_NAME
 	public static void main(String[] args){
-		if(args[0] == null){
+		if(args.length == 0){
 			System.out.println("Usage: java -jar MSM.jar FILE_NAME");
 			System.exit(1);
 		}
