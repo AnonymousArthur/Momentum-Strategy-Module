@@ -10,7 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
+//CSV Parser for Momentum Strategy Module
+//UNSW CSE SENG3011 Team Awesome Copyright Reserved
 public class CSVParser {
 	private static ArrayList<TradeRec> tradeRecs = new ArrayList<TradeRec>();
 	public CSVParser(){
@@ -23,6 +24,7 @@ public class CSVParser {
 		String cvsSplitBy = ",";
 		try {
 			br = new BufferedReader(new FileReader(csvPath));
+			System.out.println(csvPath);
 			while ((line = br.readLine()) != null) {	 
 			    // use comma as separator
 				String[] trade = line.split(cvsSplitBy);
