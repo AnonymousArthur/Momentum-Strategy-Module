@@ -7,14 +7,13 @@ import seng3011.msm.TradeRec;
 
 
 public class  GenerateOrder {
-	public GenerateOrder(){
-		
+	public GenerateOrder(int window, double threshold){
+		this.window = window;
+		this.threshold = threshold;
 	}
 	public ArrayList<SellOrder> generate(ArrayList<TradeRec> tradeRecs) {
 		LinkedList<Double> Rts = new LinkedList<Double>();
 		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
-		int n = 3;
-		double profit=0;
 		System.out.println(tradeRecs.size());
 		for(int i=1; i < tradeRecs.size(); i++){
 			SellOrder order = new SellOrder();
@@ -22,6 +21,7 @@ public class  GenerateOrder {
 			order.setTime(tradeRecs.get(i).time);
 			
 			if(tradeRecs.get(i).last > 0){
+				order.setRic(tradeRecs.get(i).ric);
 				order.setPrice(tradeRecs.get(i).last);
 				order.setVolume(100);
 				order.setValue(tradeRecs.get(i).last*100);
@@ -35,10 +35,10 @@ public class  GenerateOrder {
 				}
 				//Caclulates SMAt
 				//
-				if(Rts.size() == n + 1){
+				if(Rts.size() == window + 1){
 					double SMAtCurr=0;
 					double SMAtPrev=0;
-					for(j=0; j != n; j++){
+					for(j=0; j != window; j++){
 						SMAtPrev += Rts.get(j);
 						SMAtCurr += Rts.get(j+1);
 					}
@@ -56,5 +56,6 @@ public class  GenerateOrder {
 		}
 		return sellOrders;
 	}
-	static private double threshold = 0.001;
+	private int window;
+	private double threshold;
 }
