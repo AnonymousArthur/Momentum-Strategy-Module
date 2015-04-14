@@ -14,13 +14,18 @@ import seng3011.msm.TradeRec;
 public class  GenerateOrder {
 	private int window;
 	private double threshold;
+	private String fileName;
 	public static char check = 'a';
 	public static Date sDate, eDate;
+	static boolean newFile = true;
 	public GenerateOrder(int window, double threshold){
 		this.window = window;
 		this.threshold = threshold;
 	}
 	public ArrayList<SellOrder> generate(ArrayList<TradeRec> tradeRecs) {
+		SimpleDateFormat timeStamp = new SimpleDateFormat("yyyy-MM-dd HH#mm#ss");
+		Date now = new Date();
+		fileName = "SUMMARY "+ timeStamp.format(now)+".csv";
 		LinkedList<Double> Rts = new LinkedList<Double>();
 		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
 		for(int i=1; i < tradeRecs.size(); i++){
@@ -85,21 +90,15 @@ public class  GenerateOrder {
 
 	
 	public void printOrder(SellOrder order){
-		
-		try(PrintWriter out =  new PrintWriter(new BufferedWriter(new FileWriter("SUMMARY.csv", true)))) {
-			/*SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-			String dateString = order.date.toString();
-			Date tmpDate = null;
-			try {
-				tmpDate = sdf.parse(dateString);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
+		try(PrintWriter out =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
+			if(newFile){
+				out.println("#RIC,Date[L],Price,Volume,Value,Signal");
+				newFile = false;
+			}
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String newDateString = sdf.format(order.date);
 		    out.println(order.ric+","+newDateString+","+order.price+","+order.volume+","+Math.round(order.value*100.0)/100.0+","+order.signal);
-		    System.out.println(order.ric+","+newDateString+","+order.price+","+order.volume+","+Math.round(order.value*100.0)/100.0+","+order.signal);		
+		    //System.out.println(order.ric+","+newDateString+","+order.price+","+order.volume+","+Math.round(order.value*100.0)/100.0+","+order.signal);		
 		}catch (IOException e) {
 		}
 		
@@ -108,20 +107,20 @@ public class  GenerateOrder {
 	
 	public void printLog(int eCheck){
 		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("LOG.txt", true)))) {
+			out.println("=======================");
 			out.println("Developer: Team Awesome");
 			out.println("Momentum Strategy Module Version 1.1");
 			out.printf("Input File: %s \n", MSrun.csvPath);
-			if(eCheck == 1){
-				out.println("=======");
+			if(eCheck == 1){			
 				out.printf("Parameters: %s %d %f \n", MSrun.csvPath,window, threshold);
 				out.println("Execution = Successful");
 				out.println("Start Date/Time:"+sDate);
 				out.println("End Date/Time:"+eDate);
-				//long difference = eDate.getTime() - sDate.getTime();
-				//Date eTime = new Date(difference);
-				//Format frmt = new SimpleDateFormat("yy MM dd HH:mm:ss");
-				//out.println("Elapsed Time:"+frmt.format(eTime).toString());
-				out.println("Output File: SUMMARY.csv");
+				long difference = eDate.getTime() - sDate.getTime();
+				Date eTime = new Date(difference);
+				Format frmt = new SimpleDateFormat("yy MM dd HH:mm:ss");
+				out.println("Elapsed Time:"+frmt.format(eTime).toString());
+				out.println("Output File: "+fileName);
 			}
 		}catch (IOException e) {
 		}
