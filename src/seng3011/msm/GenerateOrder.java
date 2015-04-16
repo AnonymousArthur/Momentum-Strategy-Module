@@ -109,7 +109,7 @@ public class  GenerateOrder {
 		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("LOG.txt", true)))) {
 			out.println("=======================");
 			out.println("Developer: Team Awesome");
-			out.println("Momentum Strategy Module Version 1.1");
+			out.println("Momentum Strategy Module Version 1.2b");
 			out.printf("Input File: %s \n", MSrun.csvPath);
 			if(eCheck == 1){			
 				out.printf("Parameters: %s %d %f \n", MSrun.csvPath,window, threshold);

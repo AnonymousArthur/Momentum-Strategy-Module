@@ -8,3 +8,13 @@ Start Date/Time:Sun Jan 02 00:00:00 EST 2000
 End Date/Time:Mon Mar 23 00:00:00 EST 2015
 Elapsed Time:85 03 22 10:00:00
 Output File: SUMMARY 2015-04-14 11#31#00.csv
+=======================
+Developer: Team Awesome
+Momentum Strategy Module Version 1.1
+Input File: /Users/Arthur/Documents/SENG3011/ANZ.csv 
+Parameters: /Users/Arthur/Documents/SENG3011/ANZ.csv 3 0.010000 
+Execution = Successful
+Start Date/Time:Sun Jan 02 00:00:00 EST 2000
+End Date/Time:Mon Mar 23 00:00:00 EST 2015
+Elapsed Time:85 03 22 10:00:00
+Output File: SUMMARY 2015-04-14 11#40#10.csv
