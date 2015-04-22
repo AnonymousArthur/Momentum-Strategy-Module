@@ -24,12 +24,12 @@ public class CSVParser {
 		String cvsSplitBy = ",";
 		try {
 			br = new BufferedReader(new FileReader(csvPath));
-			System.out.println(csvPath);
+			//System.out.println(csvPath);
 			while ((line = br.readLine()) != null) {	 
 			    // use comma as separator
 				String[] trade = line.split(cvsSplitBy);
 				if(!trade[0].equals("#RIC")){
-					TradeRec newTradeRec = new TradeRec();				
+					TradeRec newTradeRec = new TradeRec();
 					DateFormat format = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 					Date date = null;
 					try {
