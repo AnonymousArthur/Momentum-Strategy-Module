@@ -3,6 +3,7 @@ package seng3011.msm;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +41,7 @@ public class GenerateOrder {
 			fileTemp.delete();
 		}
 
-		LinkedList<Double> Rts = new LinkedList<Double>();
+		HashMap<String, LinkedList<Double>> Rts = new HashMap<String, LinkedList<Double>>();
 		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
 		for (int i = 1; i < tradeRecs.size(); i++) {
 			SellOrder order = new SellOrder();
@@ -55,7 +56,8 @@ public class GenerateOrder {
 			}
 
 			if (tradeRecs.get(i).last > 0) {
-				order.setRic(tradeRecs.get(i).ric);
+				String ric = tradeRecs.get(i).ric;
+				order.setRic(ric);
 				order.setPrice(tradeRecs.get(i).last);
 				order.setVolume(100);
 				order.setValue(tradeRecs.get(i).last * 100);
@@ -68,18 +70,21 @@ public class GenerateOrder {
 				if (j >= 0) {
 					double Rt = (tradeRecs.get(i).last - tradeRecs.get(j).last)
 							/ tradeRecs.get(i).last;
-					Rts.add(Rt);
+					if(!Rts.containsKey(ric)){
+						Rts.put(ric, new LinkedList<Double>());
+					}
+					Rts.get(ric).add(Rt);
 				}
 				// Calculates SMAt
 				//
-				if (Rts.size() == window + 1) {
+				if (Rts.get(ric).size() == window + 1) {
 					double SMAtCurr = 0;
 					double SMAtPrev = 0;
 					for (j = 0; j != window; j++) {
-						SMAtPrev += Rts.get(j);
-						SMAtCurr += Rts.get(j + 1);
+						SMAtPrev += Rts.get(ric).get(j);
+						SMAtCurr += Rts.get(ric).get(j + 1);
 					}
-					Rts.remove(0);
+					Rts.get(ric).remove(0);
 					double TSt = (SMAtCurr - SMAtPrev);
 					if (TSt > threshold) {
 						order.setSignal('B');
