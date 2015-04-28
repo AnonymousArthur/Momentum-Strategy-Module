@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 //Momentum Strategy Module Execution module version 1.3
 //UNSW CSE SENG3011 Team Awesome Copyright Reserved
 public class MSrun {
@@ -14,7 +18,7 @@ public class MSrun {
 	private static String parametersPath;
 	public static String version = "1.3";
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws ParseException{
 		if(args.length == 0){
 			System.out.println("Usage: java -jar MSM.jar FILE_NAME PARAMETER_FILE_NAME");
 			System.exit(1);
@@ -22,8 +26,8 @@ public class MSrun {
 		csvPath = args[0];
 		int window = 0;
 		double threshold = 0;
-		Date startdate = null;
-		Date enddate = null;
+		Date startDate = null;
+		Date endDate = null;
 		parametersPath = args[1];
 		BufferedReader br = null;
 		try {
@@ -37,11 +41,15 @@ public class MSrun {
 					window = Integer.parseInt(tmp[1]);
 				}else if(tmp[0].equals("threshold")){
 					threshold = Double.parseDouble(tmp[1]);
-				}else if(tmp[0].equals("startDate")){
-					startdate =new Date(tmp[1]);
-					//System.out.println(startdate);
-				}else if(tmp[0].equals("endDate")){
-					enddate =new Date(tmp[1]);
+				}else if(tmp[0].equals("startDate") && tmp[1] != null){
+					SimpleDateFormat fmt = new SimpleDateFormat(
+							"dd-MMM-yyy",Locale.ENGLISH);
+					startDate = fmt.parse(tmp[1]);
+					//System.out.println(startDate);
+				}else if(tmp[0].equals("endDate") && tmp[1] != null){
+					SimpleDateFormat fmt = new SimpleDateFormat(
+							"dd-MMM-yyy",Locale.ENGLISH);
+					endDate = fmt.parse(tmp[1]);
 				}else if(tmp[0].equals("output")){
 					outputPath = tmp[1];
 				}
@@ -55,8 +63,8 @@ public class MSrun {
 			System.out.println("Parameters not enough.");
 			System.exit(1);
 		}
-		//System.out.println(startdate);
-		ArrayList<TradeRec> tradeRecs = CSVParser.CSVParse(csvPath, startdate, enddate);
+		//System.out.println(startDate);
+		ArrayList<TradeRec> tradeRecs = CSVParser.CSVParse(csvPath, startDate, endDate);
 		GenerateOrder strategy = new GenerateOrder(window, threshold);
 		ArrayList<SellOrder> sellOrders = strategy.generate(tradeRecs);
 		System.out.println("Proceess finished. Please check output files.");

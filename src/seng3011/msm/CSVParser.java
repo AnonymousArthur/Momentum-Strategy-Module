@@ -18,15 +18,17 @@ public class CSVParser {
 		
 	}
 	
-	public static ArrayList<TradeRec> CSVParse(String csvPath,Date startdate,Date enddate){
+	public static ArrayList<TradeRec> CSVParse(String csvPath,Date startDate,Date endDate) throws ParseException{
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
-		if(startdate == null){
-			startdate = new Date("01-JAN-1000");
+		SimpleDateFormat fmt = new SimpleDateFormat(
+				"dd-MMM-yyy",Locale.ENGLISH);
+		if(startDate == null){
+			startDate = fmt.parse("01-JAN-1000");
 		}
-		if(enddate == null){
-			enddate= new Date("01-JAN-3000");
+		if(endDate == null){
+			endDate= fmt.parse("01-JAN-3000");
 		}
 		try {
 			br = new BufferedReader(new FileReader(csvPath));
@@ -44,7 +46,7 @@ public class CSVParser {
 				    }
 				}
 				//System.out.println(trydate);
-				if(!trade[0].equals("#RIC")&&trydate.after(startdate)&&trydate.before(enddate)){
+				if(!trade[0].equals("#RIC")&&trydate.after(startDate)&&trydate.before(endDate)){
 					TradeRec newTradeRec = new TradeRec();
 					DateFormat format = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 					Date date = null;
