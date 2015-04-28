@@ -1,2 +1,4 @@
 window = 3
 threshold = 0.0053
+startDate = 01-DEC-2000
+endDate = 01-DEC-2001
