@@ -9,14 +9,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-//Momentum Strategy Module Execution module version 1.3
+//Momentum Strategy Module Execution module version 1.7
 //UNSW CSE SENG3011 Team Awesome Copyright Reserved
 public class MSrun {
 	//Uasge: java -jar MSM.jar FILE_NAME PARAMETER_FILE_NAME
 	public static String csvPath;
 	public static String outputPath;
 	private static String parametersPath;
-	public static String version = "1.3";
+	public static String version = "1.7";
 
 	public static void main(String[] args) throws ParseException{
 		if(args.length == 0){
