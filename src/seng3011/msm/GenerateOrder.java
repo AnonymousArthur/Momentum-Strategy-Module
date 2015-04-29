@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import seng3011.msm.SellOrder;
@@ -111,7 +112,7 @@ public class GenerateOrder {
 				out.println("#RIC,Date[L],Price,Volume,Value,Signal");
 				newFile = false;
 			}
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
 			String newDateString = sdf.format(order.date);
 			out.println(order.ric + "," + newDateString + "," + order.price
 					+ "," + order.volume + ","
