@@ -22,14 +22,7 @@ public class CSVParser {
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
-		SimpleDateFormat fmt = new SimpleDateFormat(
-				"dd-MMM-yyy",Locale.ENGLISH);
-		if(startDate == null){
-			startDate = fmt.parse("01-JAN-1000");
-		}
-		if(endDate == null){
-			endDate= fmt.parse("01-JAN-3000");
-		}
+
 		try {
 			br = new BufferedReader(new FileReader(csvPath));
 			//System.out.println(csvPath);
