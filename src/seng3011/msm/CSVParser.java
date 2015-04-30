@@ -18,17 +18,28 @@ public class CSVParser {
 		
 	}
 	
-	public static ArrayList<TradeRec> CSVParse(String csvPath){
+	public static ArrayList<TradeRec> CSVParse(String csvPath,Date startDate,Date endDate) throws ParseException{
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
+
 		try {
 			br = new BufferedReader(new FileReader(csvPath));
 			//System.out.println(csvPath);
 			while ((line = br.readLine()) != null) {	 
 			    // use comma as separator
+				DateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 				String[] trade = line.split(cvsSplitBy);
+				Date trydate = null;
 				if(!trade[0].equals("#RIC")){
+				    try {
+					    trydate = format1.parse(trade[1]);
+				    } catch (ParseException e) {
+					    e.printStackTrace();
+				    }
+				}
+				//System.out.println(trydate);
+				if(!trade[0].equals("#RIC")&&trydate.after(startDate)&&trydate.before(endDate)){
 					TradeRec newTradeRec = new TradeRec();
 					DateFormat format = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 					Date date = null;
