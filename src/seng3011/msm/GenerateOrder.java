@@ -44,7 +44,6 @@ public class GenerateOrder {
 
 		HashMap<String, LinkedList<Double>> Rts = new HashMap<String, LinkedList<Double>>();
 		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
-		
 		for (int i = 0; i < tradeRecs.size(); i++) {
 			
 			if (i == 1) {
@@ -63,22 +62,14 @@ public class GenerateOrder {
 
 				// Calculates Rt at this point, ignores previous day if no
 				// trades that day.
-				if (i >= 1) {
-					double Rt = (tradeRecs.get(i).last - tradeRecs.get(i-1).last)/ tradeRecs.get(i-1).last;
+					double Rt = tradeRecs.get(i).last;
 					Rts.get(ric).add(Rt);
-				}
 				
 				// Calculates SMAt
 				//
-				if (Rts.get(ric).size() == window + 1 ) {
-					double SMAtCurr = 0;
-					double SMAtPrev = 0;
-					for (int j = 0; j != window; j++) {
-						SMAtPrev += Rts.get(ric).get(j)/window;
-						SMAtCurr += Rts.get(ric).get(j + 1)/window;
-					}
+				if (i > window + 1 ) {
+					double TSt = (Rts.get(ric).get(window) - Rts.get(ric).get(0))/window;
 					Rts.get(ric).remove(0);
-					double TSt = (SMAtCurr - SMAtPrev);
 					if (TSt > threshold) {
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
@@ -115,6 +106,7 @@ public class GenerateOrder {
 			}
 			
 		}
+
 		printLog(1);
 		return sellOrders;
 	}
