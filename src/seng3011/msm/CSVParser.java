@@ -38,8 +38,7 @@ public class CSVParser {
 					    e.printStackTrace();
 				    }
 				}
-				//System.out.println(trydate);
-				if(!trade[0].equals("#RIC")&&trydate.after(startDate)&&trydate.before(endDate)){
+				if(!trade[0].equals("#RIC")&&trydate.after(startDate)&&trydate.before(endDate)&&!trade[4].equals("No Trades")){
 					TradeRec newTradeRec = new TradeRec();
 					DateFormat format = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 					Date date = null;

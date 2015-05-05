@@ -44,11 +44,9 @@ public class GenerateOrder {
 
 		HashMap<String, LinkedList<Double>> Rts = new HashMap<String, LinkedList<Double>>();
 		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
-		for (int i = 1; i < tradeRecs.size(); i++) {
-			SellOrder order = new SellOrder();
-			order.setRic(tradeRecs.get(i).getRic());
-			order.setDate(tradeRecs.get(i).date);
-			order.setTime(tradeRecs.get(i).time);
+		
+		for (int i = 0; i < tradeRecs.size(); i++) {
+			
 			if (i == 1) {
 				sDate = tradeRecs.get(i).date;
 			}
@@ -58,53 +56,64 @@ public class GenerateOrder {
 
 			if (tradeRecs.get(i).last > 0) {
 				String ric = tradeRecs.get(i).ric;
-				order.setRic(ric);
-				order.setPrice(tradeRecs.get(i).last);
-				order.setVolume(100);
-				order.setValue(tradeRecs.get(i).last * 100);
+				if(!Rts.containsKey(ric)){
+					Rts.put(ric, new LinkedList<Double>());
+				}
+				
 
 				// Calculates Rt at this point, ignores previous day if no
 				// trades that day.
-				int j = i - 1;
-				for (; j >= 0 && tradeRecs.get(i).last == 0; j--)
-					;
-				if (j >= 0) {
-					double Rt = (tradeRecs.get(i).last - tradeRecs.get(j).last)
-							/ tradeRecs.get(i).last;
-					if(!Rts.containsKey(ric)){
-						Rts.put(ric, new LinkedList<Double>());
-					}
+				if (i >= 1) {
+					double Rt = (tradeRecs.get(i).last - tradeRecs.get(i-1).last)/ tradeRecs.get(i-1).last;
 					Rts.get(ric).add(Rt);
 				}
+				
 				// Calculates SMAt
 				//
-				if (Rts.get(ric).size() == window + 1) {
+				if (Rts.get(ric).size() == window + 1 ) {
 					double SMAtCurr = 0;
 					double SMAtPrev = 0;
-					for (j = 0; j != window; j++) {
-						SMAtPrev += Rts.get(ric).get(j);
-						SMAtCurr += Rts.get(ric).get(j + 1);
+					for (int j = 0; j != window; j++) {
+						SMAtPrev += Rts.get(ric).get(j)/window;
+						SMAtCurr += Rts.get(ric).get(j + 1)/window;
 					}
 					Rts.get(ric).remove(0);
 					double TSt = (SMAtCurr - SMAtPrev);
 					if (TSt > threshold) {
+						SellOrder order = new SellOrder();
+						order.setRic(tradeRecs.get(i).getRic());
+						order.setDate(tradeRecs.get(i).date);
+						order.setTime(tradeRecs.get(i).time);
 						order.setSignal('B');
+						order.setRic(ric);
+						order.setPrice(tradeRecs.get(i).last);
+						order.setVolume(100);
+						order.setValue(tradeRecs.get(i).last * 100);
+						sellOrders.add(order);
 						if (order.getSignal() != check) {
 							printOrder(order);
 						}
 						check = order.getSignal();
 					} else if (TSt < -threshold) {
+						SellOrder order = new SellOrder();
+						order.setRic(tradeRecs.get(i).getRic());
+						order.setDate(tradeRecs.get(i).date);
+						order.setTime(tradeRecs.get(i).time);
 						order.setSignal('S');
+						order.setRic(ric);
+						order.setPrice(tradeRecs.get(i).last);
+						order.setVolume(100);
+						order.setValue(tradeRecs.get(i).last * 100);
+						sellOrders.add(order);
 						if (order.getSignal() != check) {
 							printOrder(order);
 						}
 						check = order.getSignal();
 					}
-
 				}
+				
 			}
-
-			sellOrders.add(order);
+			
 		}
 		printLog(1);
 		return sellOrders;
