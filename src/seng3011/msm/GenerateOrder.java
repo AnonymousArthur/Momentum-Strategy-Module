@@ -16,7 +16,6 @@ public class GenerateOrder {
 	private int window;
 	private double threshold;
 	private String fileName;
-	public static char check = 'a';
 	public static Date sDate, eDate;
 	static boolean newFile = true;
 
@@ -26,6 +25,7 @@ public class GenerateOrder {
 	}
 
 	public void generate(ArrayList<TradeRec> tradeRecs) {
+		int k = 0;
 		SimpleDateFormat timeStamp = new SimpleDateFormat(
 				"yyyy-MM-dd HH'H'mm'M'ss'S'");
 		Date now = new Date();
@@ -41,6 +41,7 @@ public class GenerateOrder {
 			fileTemp.delete();
 		}
 		HashMap<String, ArrayList<Double>> Rts = new HashMap<String, ArrayList<Double>>();
+		HashMap<String, Character> check = new HashMap<String, Character>();
 		for (int i = 0; i < tradeRecs.size(); i++) {
 			
 			if (i == 1) {
@@ -49,19 +50,28 @@ public class GenerateOrder {
 			if (i == tradeRecs.size() - 1) {
 				eDate = tradeRecs.get(i).date;
 			}
-
 			if (tradeRecs.get(i).last > 0) {
 				String ric = tradeRecs.get(i).ric;
 				if(!Rts.containsKey(ric)){
 					Rts.put(ric, new ArrayList<Double>(window + 2));
+					check.put(ric, 'a');
 				}
 				Rts.get(ric).add(tradeRecs.get(i).last);
 				// Calculates SMAt
 				//
+				
 				if (Rts.get(ric).size() == window + 2 ) {
 					double TSt = (Rts.get(ric).get(window + 1)/Rts.get(ric).get(window) - Rts.get(ric).get(1)/Rts.get(ric).get(0))/window;
+					if(ric.equals("ANZ.AX") && k != 5){
+						System.out.println(tradeRecs.get(i).date);
+						System.out.println(TSt);
+						System.out.println(threshold);
+						System.out.println(TSt > threshold);
+						k++;
+					}
 					Rts.get(ric).remove(0);
 					if (TSt > threshold) {
+						
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
 						order.setDate(tradeRecs.get(i).date);
@@ -71,10 +81,13 @@ public class GenerateOrder {
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						if (order.getSignal() != check) {
+						if (order.getSignal() != check.get(ric)) {
 							printOrder(order);
+							if(ric.equals("ANZ.AX") && k != 5){
+								System.out.println("asd");
+							}
 						}
-						check = order.getSignal();
+						check.put(ric, order.getSignal());
 					} else if (TSt < -threshold) {
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
@@ -85,10 +98,10 @@ public class GenerateOrder {
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						if (order.getSignal() != check) {
+						if (order.getSignal() != check.get(ric)) {
 							printOrder(order);
 						}
-						check = order.getSignal();
+						check.put(ric, order.getSignal());
 					}
 				}
 				
