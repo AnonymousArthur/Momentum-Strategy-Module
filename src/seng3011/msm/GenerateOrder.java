@@ -31,7 +31,6 @@ public class GenerateOrder {
 		Date now = new Date();
 		fileName = "SUMMARY " + timeStamp.format(now) + ".csv";
 		if (MSrun.outputPath == null || MSrun.outputPath.equals("")) {
-			// System.out.println(fileName);
 		} else {
 			fileName = MSrun.outputPath;
 		}
@@ -40,7 +39,7 @@ public class GenerateOrder {
 		if (fileTemp.exists()) {
 			fileTemp.delete();
 		}
-		HashMap<String, ArrayList<Double>> Rts = new HashMap<String, ArrayList<Double>>();
+		HashMap<String, ArrayList<Double>> prices = new HashMap<String, ArrayList<Double>>();
 		HashMap<String, Character> check = new HashMap<String, Character>();
 		for (int i = 0; i < tradeRecs.size(); i++) {
 			
@@ -51,57 +50,50 @@ public class GenerateOrder {
 				eDate = tradeRecs.get(i).date;
 			}
 			if (tradeRecs.get(i).last > 0) {
-				String ric = tradeRecs.get(i).ric;
-				if(!Rts.containsKey(ric)){
-					Rts.put(ric, new ArrayList<Double>(window + 2));
-					check.put(ric, 'a');
+				//In case of new company
+				String company = tradeRecs.get(i).ric;
+				if(!prices.containsKey(company)){
+					prices.put(company, new ArrayList<Double>(window + 2));
+					check.put(company, 'a');
 				}
-				Rts.get(ric).add(tradeRecs.get(i).last);
-				// Calculates SMAt
-				//
-				
-				if (Rts.get(ric).size() == window + 2 ) {
-					double TSt = (Rts.get(ric).get(window + 1)/Rts.get(ric).get(window) - Rts.get(ric).get(1)/Rts.get(ric).get(0))/window;
-					if(ric.equals("ANZ.AX") && k != 5){
-						System.out.println(tradeRecs.get(i).date);
-						System.out.println(TSt);
-						System.out.println(threshold);
-						System.out.println(TSt > threshold);
-						k++;
-					}
-					Rts.get(ric).remove(0);
+				//add price to list of prices for company
+				prices.get(company).add(tradeRecs.get(i).last);
+				//For valid Tst value, we need window + 2 values
+				if (prices.get(company).size() == window + 2 ) {
+					//Tst = (Pt/Pt-1 - Pt-n/Pt-n-1) * 1/n
+					double TSt = (prices.get(company).get(window + 1)/prices.get(company).get(window) - 
+								  prices.get(company).get(1)/prices.get(company).get(0))
+								  /window;
+					//Remove old price, we do not need it anymore
+					prices.get(company).remove(0);
 					if (TSt > threshold) {
-						
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
 						order.setDate(tradeRecs.get(i).date);
 						order.setTime(tradeRecs.get(i).time);
 						order.setSignal('B');
-						order.setRic(ric);
+						order.setRic(company);
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						if (order.getSignal() != check.get(ric)) {
+						if (order.getSignal() != check.get(company)) {
 							printOrder(order);
-							if(ric.equals("ANZ.AX") && k != 5){
-								System.out.println("asd");
-							}
 						}
-						check.put(ric, order.getSignal());
+						check.put(company, order.getSignal());
 					} else if (TSt < -threshold) {
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
 						order.setDate(tradeRecs.get(i).date);
 						order.setTime(tradeRecs.get(i).time);
 						order.setSignal('S');
-						order.setRic(ric);
+						order.setRic(company);
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						if (order.getSignal() != check.get(ric)) {
+						if (order.getSignal() != check.get(company)) {
 							printOrder(order);
 						}
-						check.put(ric, order.getSignal());
+						check.put(company, order.getSignal());
 					}
 				}
 				
