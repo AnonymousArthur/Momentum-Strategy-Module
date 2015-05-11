@@ -17,7 +17,7 @@ public class MSrun {
 	public static String csvPath;
 	public static String outputPath;
 	private static String parametersPath;
-	public static String version = "1.8.1";
+	public static String version = "2.0.0";
 
 	public static void main(String[] args) throws ParseException {
 		if (args.length == 0) {
@@ -71,10 +71,11 @@ public class MSrun {
 			System.exit(1);
 		}
 		// System.out.println(startDate);
+		long parse = System.currentTimeMillis();
 		ArrayList<TradeRec> tradeRecs = CSVParser.CSVParse(csvPath, startDate,
 				endDate);
 		GenerateOrder strategy = new GenerateOrder(window, threshold);
-		ArrayList<SellOrder> sellOrders = strategy.generate(tradeRecs);
+		strategy.generate(tradeRecs);
 		System.out.println("Proceess finished. Please check output files.");
 	}
 }

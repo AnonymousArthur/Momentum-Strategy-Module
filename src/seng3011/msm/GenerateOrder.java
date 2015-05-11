@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +16,6 @@ public class GenerateOrder {
 	private int window;
 	private double threshold;
 	private String fileName;
-	public static char check = 'a';
 	public static Date sDate, eDate;
 	static boolean newFile = true;
 
@@ -26,13 +24,13 @@ public class GenerateOrder {
 		this.threshold = threshold;
 	}
 
-	public ArrayList<SellOrder> generate(ArrayList<TradeRec> tradeRecs) {
+	public void generate(ArrayList<TradeRec> tradeRecs) {
+		int k = 0;
 		SimpleDateFormat timeStamp = new SimpleDateFormat(
 				"yyyy-MM-dd HH'H'mm'M'ss'S'");
 		Date now = new Date();
 		fileName = "SUMMARY " + timeStamp.format(now) + ".csv";
 		if (MSrun.outputPath == null || MSrun.outputPath.equals("")) {
-			// System.out.println(fileName);
 		} else {
 			fileName = MSrun.outputPath;
 		}
@@ -41,10 +39,8 @@ public class GenerateOrder {
 		if (fileTemp.exists()) {
 			fileTemp.delete();
 		}
-
-		HashMap<String, LinkedList<Double>> Rts = new HashMap<String, LinkedList<Double>>();
-		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
-		
+		HashMap<String, ArrayList<Double>> prices = new HashMap<String, ArrayList<Double>>();
+		HashMap<String, Character> check = new HashMap<String, Character>();
 		for (int i = 0; i < tradeRecs.size(); i++) {
 			
 			if (i == 1) {
@@ -53,70 +49,59 @@ public class GenerateOrder {
 			if (i == tradeRecs.size() - 1) {
 				eDate = tradeRecs.get(i).date;
 			}
-
 			if (tradeRecs.get(i).last > 0) {
-				String ric = tradeRecs.get(i).ric;
-				if(!Rts.containsKey(ric)){
-					Rts.put(ric, new LinkedList<Double>());
+				//In case of new company
+				String company = tradeRecs.get(i).ric;
+				if(!prices.containsKey(company)){
+					prices.put(company, new ArrayList<Double>(window + 2));
+					check.put(company, 'a');
 				}
-				
-
-				// Calculates Rt at this point, ignores previous day if no
-				// trades that day.
-				if (i >= 1) {
-					double Rt = (tradeRecs.get(i).last - tradeRecs.get(i-1).last)/ tradeRecs.get(i-1).last;
-					Rts.get(ric).add(Rt);
-				}
-				
-				// Calculates SMAt
-				//
-				if (Rts.get(ric).size() == window + 1 ) {
-					double SMAtCurr = 0;
-					double SMAtPrev = 0;
-					for (int j = 0; j != window; j++) {
-						SMAtPrev += Rts.get(ric).get(j)/window;
-						SMAtCurr += Rts.get(ric).get(j + 1)/window;
-					}
-					Rts.get(ric).remove(0);
-					double TSt = (SMAtCurr - SMAtPrev);
+				//add price to list of prices for company
+				prices.get(company).add(tradeRecs.get(i).last);
+				//For valid Tst value, we need window + 2 values
+				if (prices.get(company).size() == window + 2 ) {
+					//Tst = (Pt/Pt-1 - Pt-n/Pt-n-1) * 1/n
+					double TSt = (prices.get(company).get(window + 1)/prices.get(company).get(window) - 
+								  prices.get(company).get(1)/prices.get(company).get(0))
+								  /window;
+					//Remove old price, we do not need it anymore
+					prices.get(company).remove(0);
 					if (TSt > threshold) {
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
 						order.setDate(tradeRecs.get(i).date);
 						order.setTime(tradeRecs.get(i).time);
 						order.setSignal('B');
-						order.setRic(ric);
+						order.setRic(company);
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						sellOrders.add(order);
-						if (order.getSignal() != check) {
+						if (order.getSignal() != check.get(company)) {
 							printOrder(order);
 						}
-						check = order.getSignal();
+						check.put(company, order.getSignal());
 					} else if (TSt < -threshold) {
 						SellOrder order = new SellOrder();
 						order.setRic(tradeRecs.get(i).getRic());
 						order.setDate(tradeRecs.get(i).date);
 						order.setTime(tradeRecs.get(i).time);
 						order.setSignal('S');
-						order.setRic(ric);
+						order.setRic(company);
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						sellOrders.add(order);
-						if (order.getSignal() != check) {
+						if (order.getSignal() != check.get(company)) {
 							printOrder(order);
 						}
-						check = order.getSignal();
+						check.put(company, order.getSignal());
 					}
 				}
 				
 			}
 			
 		}
+
 		printLog(1);
-		return sellOrders;
 	}
 
 	public void printOrder(SellOrder order) {

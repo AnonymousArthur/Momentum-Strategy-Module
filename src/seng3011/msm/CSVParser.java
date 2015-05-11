@@ -49,21 +49,21 @@ public class CSVParser {
 					}
 					newTradeRec.setRIC(trade[0]);
 					newTradeRec.setDate(date);					
-					newTradeRec.setTime(trade[2]);
-					newTradeRec.setType(trade[3]);
-					newTradeRec.setQualifier(trade[4]);
-					if(!trade[5].equals(""))						
-						newTradeRec.setOpen(Double.parseDouble(trade[5]));
-					if(!trade[6].equals(""))
-						newTradeRec.setHigh(Double.parseDouble(trade[6]));
-					if(!trade[7].equals(""))
-						newTradeRec.setLow(Double.parseDouble(trade[7]));
+//					newTradeRec.setTime(trade[2]);
+//					newTradeRec.setType(trade[3]);
+//					newTradeRec.setQualifier(trade[4]);
+//					if(!trade[5].equals(""))						
+//						newTradeRec.setOpen(Double.parseDouble(trade[5]));
+//					if(!trade[6].equals(""))
+//						newTradeRec.setHigh(Double.parseDouble(trade[6]));
+//					if(!trade[7].equals(""))
+//						newTradeRec.setLow(Double.parseDouble(trade[7]));
 					if(!trade[8].equals(""))
 						newTradeRec.setLast(Double.parseDouble(trade[8]));
-					if(!trade[9].equals(""))
-						newTradeRec.setVolume(Long.parseLong(trade[9]));
-					if(!trade[10].equals(""))
-						newTradeRec.setOpenInterest(Double.parseDouble(trade[10]));
+//					if(!trade[9].equals(""))
+//						newTradeRec.setVolume(Long.parseLong(trade[9]));
+//					if(!trade[10].equals(""))
+//						newTradeRec.setOpenInterest(Double.parseDouble(trade[10]));
 					newTradeRec.setSettle(trade[11]);
 					newTradeRec.setDataSource(trade[12]);
 					tradeRecs.add(newTradeRec);									
