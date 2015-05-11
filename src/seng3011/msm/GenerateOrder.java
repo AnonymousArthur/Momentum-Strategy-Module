@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +25,7 @@ public class GenerateOrder {
 		this.threshold = threshold;
 	}
 
-	public ArrayList<SellOrder> generate(ArrayList<TradeRec> tradeRecs) {
+	public void generate(ArrayList<TradeRec> tradeRecs) {
 		SimpleDateFormat timeStamp = new SimpleDateFormat(
 				"yyyy-MM-dd HH'H'mm'M'ss'S'");
 		Date now = new Date();
@@ -41,9 +40,7 @@ public class GenerateOrder {
 		if (fileTemp.exists()) {
 			fileTemp.delete();
 		}
-
 		HashMap<String, ArrayList<Double>> Rts = new HashMap<String, ArrayList<Double>>();
-		ArrayList<SellOrder> sellOrders = new ArrayList<SellOrder>();
 		for (int i = 0; i < tradeRecs.size(); i++) {
 			
 			if (i == 1) {
@@ -74,7 +71,6 @@ public class GenerateOrder {
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						sellOrders.add(order);
 						if (order.getSignal() != check) {
 							printOrder(order);
 						}
@@ -89,7 +85,6 @@ public class GenerateOrder {
 						order.setPrice(tradeRecs.get(i).last);
 						order.setVolume(100);
 						order.setValue(tradeRecs.get(i).last * 100);
-						sellOrders.add(order);
 						if (order.getSignal() != check) {
 							printOrder(order);
 						}
@@ -102,7 +97,6 @@ public class GenerateOrder {
 		}
 
 		printLog(1);
-		return sellOrders;
 	}
 
 	public void printOrder(SellOrder order) {
